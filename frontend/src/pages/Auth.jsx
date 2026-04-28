@@ -46,12 +46,14 @@ function Auth({ setIsAuth, setRole }) {
         {error && <p style={styles.error}>{error}</p>}
 
         <div style={styles.inputGroup}>
-          <label style={styles.label}>Email</label>
+          <label htmlFor="login-email" style={styles.label}>Email</label>
           <input
+            id="login-email"
             style={styles.input}
             type="email"
             name="email"
             placeholder="Enter your email"
+            autoComplete="email"
             required
             onChange={(e) =>
               setForm({ ...form, email: e.target.value })
@@ -60,12 +62,14 @@ function Auth({ setIsAuth, setRole }) {
         </div>
 
         <div style={styles.inputGroup}>
-          <label style={styles.label}>Password</label>
+          <label htmlFor="login-password" style={styles.label}>Password</label>
           <input
+            id="login-password"
             style={styles.input}
             type="password"
             name="password"
             placeholder="Enter your password"
+            autoComplete="current-password"
             required
             onChange={(e) =>
               setForm({ ...form, password: e.target.value })

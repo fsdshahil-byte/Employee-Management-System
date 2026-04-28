@@ -5,6 +5,15 @@ const getBaseOrigin = () => {
     return import.meta.env.VITE_API_ORIGIN.replace(/\/$/, "");
   }
 
+  if (
+    import.meta.env.DEV &&
+    isBrowser &&
+    window.location.hostname === "localhost" &&
+    window.location.port === "5173"
+  ) {
+    return "http://localhost:3000";
+  }
+
   if (isBrowser && window.location.origin) {
     return window.location.origin;
   }

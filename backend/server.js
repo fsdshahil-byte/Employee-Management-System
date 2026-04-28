@@ -24,13 +24,24 @@ const notFound = require("./middleware/notFound");
 
 const app = express();
 const frontendDistPath = path.resolve(__dirname, "../frontend/dist");
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+};
 
 app.use(
-  cors({
-    origin: allowedOrigin,
-    credentials: true,
-  })
+  cors(corsOptions)
 );
 app.use(express.json());
 app.use(logger);
@@ -63,8 +74,9 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigin,
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 

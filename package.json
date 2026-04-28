@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "npm --prefix backend install && npm --prefix frontend install && npm --prefix frontend run build",
-    "start": "npm --prefix backend start"
+    "start": "npm --prefix backend start",
+    "setup:data": "npm --prefix backend run import:compass && npm --prefix backend run setup:demo-login"
   }
 }

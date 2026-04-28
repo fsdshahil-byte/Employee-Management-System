@@ -56,18 +56,24 @@ function Login({ setIsAuth, setRole }) {
         )}
 
         <input
+          id="legacy-login-email"
           type="email"
+          name="email"
           placeholder="Email"
           value={form.email}
+          autoComplete="email"
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           style={styles.input}
           required
         />
 
         <input
+          id="legacy-login-password"
           type="password"
+          name="password"
           placeholder="Password"
           value={form.password}
+          autoComplete="current-password"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           style={styles.input}
           required
