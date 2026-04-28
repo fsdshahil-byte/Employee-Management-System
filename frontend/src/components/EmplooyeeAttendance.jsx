@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Clock3, LogIn, LogOut, Sparkles, UserRound } from "lucide-react";
 import API from "../api/axios";
+import { getUploadUrl } from "../config";
 
 function EmployeeAttendance({ darkMode = false }) {
   const [msg, setMsg] = useState("");
@@ -140,9 +141,7 @@ function EmployeeAttendance({ darkMode = false }) {
       .join("");
   }, [employee]);
 
-  const imageUrl = employee?.image
-    ? `http://localhost:3000/uploads/${employee.image}`
-    : "";
+  const imageUrl = getUploadUrl(employee?.image);
 
   const styles = {
     shell: {

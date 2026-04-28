@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
-const BASE_URL = "http://localhost:3000";
+import { getUploadUrl } from "../config";
 
 function EmployeeTable({
   employees,
@@ -36,7 +35,7 @@ function EmployeeTable({
   };
 
   const imageUrl = (image) =>
-    image ? `${BASE_URL}/uploads/${image}` : "https://via.placeholder.com/50";
+    image ? getUploadUrl(image) : "https://via.placeholder.com/50";
 
   const iconStyle = (color) => ({
     cursor: "pointer",

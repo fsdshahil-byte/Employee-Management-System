@@ -24,9 +24,9 @@ import {
 import API from "../api/axios";
 import EmployeeAttendance from "../components/EmplooyeeAttendance";
 import ChatPanel from "../components/ChatPanel";
+import { getUploadUrl, SOCKET_URL } from "../config";
 
 const MemoEmployeeAttendance = memo(EmployeeAttendance);
-const BASE_URL = "http://localhost:3000";
 
 const UPCOMING_HOLIDAYS = [
   { name: "May Day", date: "2026-05-01" },
@@ -178,7 +178,7 @@ export default function EmployeeDashboard() {
   }, [darkMode]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io(SOCKET_URL);
 
     socket.on("leaveUpdated", () => {
       fetchLeaves();
@@ -1351,7 +1351,7 @@ export default function EmployeeDashboard() {
             <div style={styles.profileRow}>
               {employee?.image ? (
                 <img
-                  src={`${BASE_URL}/uploads/${employee.image}`}
+                  src={getUploadUrl(employee.image)}
                   alt={employee?.name || "Employee"}
                   style={styles.avatar}
                 />

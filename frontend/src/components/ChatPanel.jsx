@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-
-const BASE_URL = "http://localhost:3000";
+import { getUploadUrl } from "../config";
 
 function ChatPanel({
   contacts,
@@ -17,7 +16,7 @@ function ChatPanel({
   loadingMessages,
   darkMode = false,
 }) {
-  const getImageUrl = (image) => (image ? `${BASE_URL}/uploads/${image}` : "");
+  const getImageUrl = (image) => getUploadUrl(image);
   const currentUserId =
     localStorage.getItem("userId") ||
     JSON.parse(localStorage.getItem("user") || "{}")._id ||

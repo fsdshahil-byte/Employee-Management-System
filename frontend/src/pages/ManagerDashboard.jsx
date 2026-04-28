@@ -24,8 +24,7 @@ import {
   SunMedium,
   Users,
 } from "lucide-react";
-
-const BASE_URL = "http://localhost:3000";
+import { getUploadUrl, SOCKET_URL } from "../config";
 
 function ManagerDashboard() {
   const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -244,7 +243,7 @@ function ManagerDashboard() {
   }, [leaveFilter]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io(SOCKET_URL);
 
     socket.on("attendanceUpdated", () => {
       fetchAttendance();
@@ -1130,7 +1129,7 @@ function ManagerDashboard() {
               <div style={styles.profileAvatar}>
                 {managerProfile.image ? (
                   <img
-                    src={`${BASE_URL}/uploads/${managerProfile.image}`}
+                    src={getUploadUrl(managerProfile.image)}
                     alt={formattedManagerName}
                     style={styles.profileAvatarImage}
                   />

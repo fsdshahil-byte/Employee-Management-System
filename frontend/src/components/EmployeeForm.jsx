@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
-
-const API_BASE_URL = "http://localhost:3000";
+import { getUploadUrl } from "../config";
 
 function EmployeeForm({ fetchEmployees, setShowForm, selectedEmployee }) {
   const [formData, setFormData] = useState({
@@ -30,7 +29,7 @@ function EmployeeForm({ fetchEmployees, setShowForm, selectedEmployee }) {
       });
 
       if (selectedEmployee.image) {
-        setPreview(`${API_BASE_URL}/uploads/${selectedEmployee.image}`);
+        setPreview(getUploadUrl(selectedEmployee.image));
       } else {
         setPreview(null);
       }

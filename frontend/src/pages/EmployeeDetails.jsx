@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api/axios";
+import { getUploadUrl } from "../config";
 
 function EmployeeDetails() {
   const { id } = useParams();
@@ -79,7 +80,7 @@ function EmployeeDetails() {
           <img
             src={
               employee.image
-                ? `http://localhost:3000/uploads/${employee.image}`
+                ? getUploadUrl(employee.image)
                 : "https://via.placeholder.com/100"
             }
             alt="profile"

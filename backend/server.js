@@ -1,8 +1,7 @@
-console.log("🚀 Server starting...");
-
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
+const path = require("path");
 const { Server } = require("socket.io");
 require("dotenv").config();
 
@@ -17,28 +16,27 @@ const todoRoutes = require("./routes/todoRoutes");
 const leaveRoutes = require("./routes/leaveRoutes");
 const meetingRoutes = require("./routes/meetingRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+
 // Middleware
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
 const notFound = require("./middleware/notFound");
 
 const app = express();
+const frontendDistPath = path.resolve(__dirname, "../frontend/dist");
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
 
-//  CONNECT DATABASE
-connectDB();
-
-// MIDDLEWARE
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: allowedOrigin,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(logger);
 
-//  STATIC FILES
 app.use("/uploads", express.static("uploads"));
 
-//  API ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/tasks", taskRoutes);
@@ -47,43 +45,53 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/leaves", leaveRoutes);
 app.use("/api/meetings", meetingRoutes);
 app.use("/api/messages", messageRoutes);
-// ROOT TEST ROUTE
-app.get("/", (req, res) => {
-  res.send("API is running...");
+
+app.get("/api/health", (req, res) => {
+  res.json({ message: "API is running..." });
 });
 
-//  404 HANDLER
-app.use(notFound);
+app.use(express.static(frontendDistPath));
 
-//  ERROR HANDLER
+app.get(/^\/(?!api|uploads).*/, (req, res) => {
+  res.sendFile(path.join(frontendDistPath, "index.html"));
+});
+
+app.use(notFound);
 app.use(errorHandler);
 
-//  CREATE HTTP SERVER
 const server = http.createServer(app);
 
-// SOCKET.IO SETUP
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"]
-  }
+    origin: allowedOrigin,
+    methods: ["GET", "POST"],
+  },
 });
 
-//  MAKE SOCKET AVAILABLE IN ROUTES
 app.set("io", io);
 
-//  SOCKET CONNECTION
 io.on("connection", (socket) => {
-  console.log("⚡ User connected:", socket.id);
+  console.log("User connected:", socket.id);
 
   socket.on("disconnect", () => {
-    console.log("❌ User disconnected:", socket.id);
+    console.log("User disconnected:", socket.id);
   });
 });
 
-//  START SERVER
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-  console.log(`🔥 Server running on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    server.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server");
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
