@@ -1,0 +1,397 @@
+/* =====================================================
+   BASE / RESET
+===================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   TABLE STYLES (RESPONSIVE - NO NAME CHANGE)
+===================================================== */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* ✅ horizontal scroll */
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.employee-table {
+  width: 100%;
+  min-width: 700px; /* keeps layout safe */
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+
+.employee-table thead {
+  background: #007bff;
+  color: white;
+}
+
+.employee-table th {
+  padding: 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ---------- Body ---------- */
+
+.employee-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.employee-table tbody tr:hover {
+  background-color: #f1f5f9;
+  transition: 0.2s;
+}
+
+/* ---------- Image ---------- */
+
+.emp-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+/* ---------- Icons ---------- */
+
+.edit-icon {
+  color: #007bff;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.delete-icon {
+  color: red;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ---------- Empty State ---------- */
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+
+/* =====================================================
+   RESPONSIVE ONLY (NO STRUCTURE CHANGE)
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .employee-table {
+    min-width: 600px; /* allow scroll instead of breaking */
+  }
+
+  .employee-table th,
+  .employee-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .emp-img {
+    width: 40px;
+    height: 40px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .employee-table {
+    min-width: 500px;
+  }
+
+  .employee-table th,
+  .employee-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .emp-img {
+    width: 35px;
+    height: 35px;
+  }
+
+}
+
+/* =====================================================
+   FORM STYLES (Employee Form)
+===================================================== */
+.form-container {
+  max-width: 900px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.form-title {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+}
+
+.form-button {
+  grid-column: 1 / -1;
+  padding: 12px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.form-button:hover {
+  background: #0056b3;
+}
+
+.preview-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin: auto;
+  grid-column: 1 / -1;
+}
+
+
+/* =====================================================
+   NAVBAR STYLES
+===================================================== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: linear-gradient(90deg, #007bff, #0056b3);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.welcome-text {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: white;
+  color: #007bff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #e6e6e6;
+  transform: scale(1.05);
+}
+
+
+/* =====================================================
+   LOGIN PAGE STYLES
+===================================================== */
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  font-family: Arial, sans-serif;
+}
+
+.login-form {
+  background: #ffffff;
+  padding: 35px 30px;
+  border-radius: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+}
+
+.login-form button {
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: #667eea;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-form button:hover {
+  background: #5a67d8;
+  transform: scale(1.04);
+}
+
+
+/* =====================================================
+   AUTH (REGISTER / LOGIN SHARED)
+===================================================== */
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.auth-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.auth-form button {
+  padding: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.auth-form p {
+  text-align: center;
+  cursor: pointer;
+  color: blue;
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+@media (max-width: 768px) {
+  .employee-table {
+    font-size: 14px;
+  }
+
+  .emp-img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .welcome-text {
+    display: none;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .logout-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .login-form {
+    width: 90%;
+  }
+}
