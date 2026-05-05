@@ -39,10 +39,12 @@ export default function EmployeeDashboard() {
   const token = localStorage.getItem("token");
   const [activeView, setActiveView] = useState("dashboard");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem("employeeDarkMode");
-    return saved === null ? true : saved === "true";
+    return saved === null ? false : saved === "true";
   });
+
   const [employee, setEmployee] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -1412,7 +1414,7 @@ export default function EmployeeDashboard() {
                 style={{ ...styles.toggle, marginTop: "14px" }}
               >
                 {darkMode ? <SunMedium size={16} /> : <MoonStar size={16} />}
-                {darkMode ? "Light" : "Dark"}
+                {darkMode ? "light" : "Dark"}
               </button>
             </div>
           </section>

@@ -122,4 +122,68 @@ router.put("/me/image", auth, upload.single("image"), async (req, res) => {
   }
 });
 
+router.post("/register", upload.single("image"), async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      password,
+      department = "",
+      designation = "",
+    } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Name, email and password are required",
+      });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const existingUser = await User.findOne({ email: normalizedEmail });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      email: normalizedEmail,
+      password: hashedPassword,
+      role: "employee",
+      image: req.file ? req.file.filename : "",
+    });
+
+    await Employee.create({
+      userId: user._id,
+      name,
+      email: normalizedEmail,
+      department,
+      designation,
+      image: req.file ? req.file.filename : "",
+    });
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET || "secret123",
+      { expiresIn: "1d" }
+    );
+
+    res.status(201).json({
+      message: "Account created successfully",
+      token,
+      user: await buildUserPayload(user),
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
+
 module.exports = router;

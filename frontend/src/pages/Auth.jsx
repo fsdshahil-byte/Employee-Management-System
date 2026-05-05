@@ -7,7 +7,7 @@ function Auth({ setIsAuth, setRole }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+const [isSignup, setIsSignup] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -80,7 +80,15 @@ function Auth({ setIsAuth, setRole }) {
         <button style={styles.button} type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
-
+<p style={{ textAlign: "center", fontSize: "13px" }}>
+  New employee?{" "}
+  <span
+    onClick={() => navigate("/signup")}
+    style={{ color: "#3b82f6", cursor: "pointer", fontWeight: "bold" }}
+  >
+    Create account
+  </span>
+</p>
       </form>
     </div>
   );

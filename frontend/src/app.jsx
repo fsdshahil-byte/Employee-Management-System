@@ -7,6 +7,7 @@ import EmployeeDashboard from "./pages/EmployeeDashboard";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import EmployeeDetails from "./pages/EmployeeDetails";
+import Signup from "./pages/Signup";
 function App() {
   const [isAuth, setIsAuth] = useState(!!localStorage.getItem("token"));
   const [role, setRole] = useState(localStorage.getItem("role") || "");
@@ -50,7 +51,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+<Route path="/signup" element={<Signup setIsAuth={setIsAuth} setRole={setRole} />} />
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" />} />
 
