@@ -23,31 +23,40 @@ const errorHandler = require("./middleware/errorHandler");
 const notFound = require("./middleware/notFound");
 
 const app = express();
+
+// ✅ Correct frontend dist path
 const frontendDistPath = path.resolve(__dirname, "../frontend/dist");
+
+// 🔥 DEBUG (check this in Render logs)
+console.log("Serving frontend from:", frontendDistPath);
+
+// ✅ Flexible CORS (prevents blocking Render domain)
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.FRONTEND_URL,
+  "https://employee-management-system-3-amix.onrender.com"
 ].filter(Boolean);
 
 const corsOptions = {
   origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps, curl)
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-
+    console.error("Blocked by CORS:", origin);
     return callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
 };
 
-app.use(
-  cors(corsOptions)
-);
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(logger);
 
+// Static uploads
 app.use("/uploads", express.static("uploads"));
 
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/tasks", taskRoutes);
@@ -57,19 +66,31 @@ app.use("/api/leaves", leaveRoutes);
 app.use("/api/meetings", meetingRoutes);
 app.use("/api/messages", messageRoutes);
 
+// Health check
 app.get("/api/health", (req, res) => {
   res.json({ message: "API is running..." });
 });
 
+// ✅ Serve frontend static files
 app.use(express.static(frontendDistPath));
 
+// ✅ Handle React/Vite routing safely
 app.get(/^\/(?!api|uploads).*/, (req, res) => {
-  res.sendFile(path.join(frontendDistPath, "index.html"));
+  const filePath = path.join(frontendDistPath, "index.html");
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error sending index.html:", err.message);
+      res.status(500).send("Frontend build not found or failed to load.");
+    }
+  });
 });
 
+// Error handling
 app.use(notFound);
 app.use(errorHandler);
 
+// Socket setup
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -90,8 +111,10 @@ io.on("connection", (socket) => {
   });
 });
 
+// Port
 const PORT = process.env.PORT || 3000;
 
+// Start server
 const startServer = async () => {
   try {
     await connectDB();
