@@ -36,7 +36,25 @@ const [isSignup, setIsSignup] = useState(false);
       setLoading(false);
     }
   };
+const handleAdminDemo = async () => {
+  try {
+    const res = await API.post("/auth/login", {
+      email: "manager@gmail.com",
+      password: "123456"
+    });
 
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("role", res.data.user.role);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
+    setIsAuth(true);
+    setRole(res.data.user.role);
+
+    navigate("/manager-dashboard", { replace: true });
+  } catch (err) {
+    console.log("Demo login failed", err);
+  }
+};
   return (
     <div style={styles.container}>
       <form onSubmit={handleLogin} style={styles.form}>
@@ -89,6 +107,20 @@ const [isSignup, setIsSignup] = useState(false);
     Create account
   </span>
 </p>
+<button
+  type="button"
+  onClick={handleAdminDemo}
+  style={{
+    marginTop: "15px",
+    background: "transparent",
+    border: "none",
+    color: "#c8bfbf",
+    cursor: "pointer",
+    textDecoration: "underline"
+  }}
+>
+  Are you an Admin? Click here
+</button>
       </form>
     </div>
   );
